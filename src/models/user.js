@@ -33,6 +33,12 @@ const userSchema = new mongoose.Schema({
     }]
 });
 
+userSchema.virtual('notes', {
+    ref: 'notes',
+    localField: '_id',
+    foreignField: 'creator'
+});
+
 userSchema.methods.toJSON = function () {
     const user = this;
     const userObj = user.toObject();
@@ -68,7 +74,7 @@ userSchema.statics.findByCredentials = async (email, password) => {
     return user;
 }
 
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     const user = this;
 
     if (user.isModified('password')) {

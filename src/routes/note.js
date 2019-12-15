@@ -2,7 +2,6 @@ const express = require('express');
 
 const auth = require('../middleware/auth');
 const Note = require('../models/note');
-const User = require('../models/user');
 
 const router = new express.Router();
 
@@ -11,9 +10,9 @@ router.post('/note', auth, async (req, res) => {
         req.body.creator = req.user._id;
         const note = new Note(req.body);
 
-        await note.save();
+        const savedNote = await note.save();
 
-        res.status(201).send(note);
+        res.status(201).send(savedNote);
     } catch (error) {
         res.status(400).send(error);
     }
