@@ -17,6 +17,16 @@ router.post('/users', async (req, res) => {
     }
 });
 
+router.get('/users/email/:email', auth, async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.params.email });
+
+        res.status(200).send({ id: user._id });
+    } catch (error) {
+        res.status(404).send({ error: 'User not found' });
+    }
+});
+
 router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
